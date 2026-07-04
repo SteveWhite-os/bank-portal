@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { formatCurrency } from '@/lib/helpers'
 import { useRouter } from 'next/router'
+import { User } from 'lucide-react'
 
 export default function ClientDashboard({ user }) {
   const [profile, setProfile] = useState(user)

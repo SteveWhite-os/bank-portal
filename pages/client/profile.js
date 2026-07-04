@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { formatCurrency, getInitials } from '@/lib/helpers'
+import { User } from 'lucide-react'
 
 export default function ClientProfile({ user }) {
   const [profile, setProfile] = useState(user)
