@@ -1,6 +1,19 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { formatCurrency } from '@/lib/helpers'
+import { supabaseAdmin } from '@/lib/supabaseServer'
+
+export default async function handler(req, res) {
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' })
+  }
+  const { data, error } = await supabaseAdmin
+    .from('profiles')
+    .select('*')
+    .order('created_at', { ascending: false })
+  if (error) return res.status(400).json({ error: error.message })
+  res.status(200).json(data)
+}
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([])
@@ -10,7 +23,16 @@ export default function AdminUsers() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetchUsers()
+    const fetchUsers = async () => {
+    const res = await fetch('/api/admin/users')
+    const data = await res.json()
+    if (res.ok) {
+      setUsers(data)
+    } else {
+      console.error(data.error)
+    }
+  }
+  fetchUsers()
   }, [])
 
   const fetchUsers = async () => {

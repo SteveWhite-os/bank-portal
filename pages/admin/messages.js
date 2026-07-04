@@ -12,8 +12,9 @@ export default function AdminMessages() {
   }, [])
 
   const fetchUsers = async () => {
-    const { data } = await supabase.from('profiles').select('id, name, email').eq('role', 'client')
-    setUsers(data || [])
+    const res = await fetch('/api/admin/users')
+  const data = await res.json()
+  if (res.ok) setUsers(data.filter(u => u.role === 'client'))
   }
 
   const handleSend = async (e) => {
